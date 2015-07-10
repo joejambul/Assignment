@@ -1,6 +1,112 @@
 <!DOCTYPE html>
 <html>
-<body>
-Hello
+<head>
+	<title>REGISTRATOR</title>
+
+	<script src="cordova.js"></script>
+	
+	<script>
+		function pageLoaded()
+		{
+			document.addEvetListener("deviceready",phoneReady,false);
+		}
+		
+		function phoneReady()
+		{
+			alert("ready to go");
+		}
+		
+		function initCamera()
+		{
+			var option = {
+				quality = 80;
+				destination: Camera.DestinationType.FILE_URI,
+				allowEdit:true,
+				encodingType: Camera.EncodingType.JPEG,
+				sourceType: Camera.PictureSourceType.CAMERA
+			};
+			navigator.camera.getPicture(onSuccess,onFail,option);
+		}
+		
+		function onPhoto()
+		{
+			var option =
+			{
+				sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+			};
+			navigator.camera.getPicture(onSuccess,onFail,option);
+		}
+		
+		function onSuccess(imageURL)
+		{
+			document.getElementBy("pic").src = "data:/image/jpeg;base64," + imageURL;
+		}
+		
+		function onFail(message)
+		{
+			alert("failed");
+		}
+		
+		function register()
+		{
+			var pass = "yes";
+			var name = document.getElementById("name").value;
+			var email = document.getElementById("email").value;
+			if(name == "")
+			{
+				alert("Please enter your name");
+			}
+			if(email == "")
+			{
+				alert("Please enter your email");
+			}
+			else if(pass == "yes")
+			{
+				var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+				
+				if(regex.test(email))
+				{
+					alert("Register is success");
+				}
+				else
+				{
+					alert("Please enter valid email");
+				}
+			}
+		}
+		
+	
+	</script>
+	
+</head>
+<body onload="pageLoaded()">
+
+	<table width="100%" height="500px">
+		<tr>
+			<td><img src="" id="pic" height="400" /></td>
+			<td>
+				<table width="50%%" height="50%">
+					<tr>
+						<td>: <input type="button" id="takePic" value="Take Picture" size="50" onclick="initCamera()" /> </td>
+					</tr>
+					<tr>
+						<td>: <input type="button" id="albumPic" value="Upload Picture" size="50px" onclick="onPhoto()" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td>Name</td>
+			<td>: <input type="text" id="name" placeholder="Please insert your name" required /></td>
+		</tr>
+		<tr>
+			<td>Email</td>
+			<td>: <input type="text" id="email" placeholder="Please insert your email" required /></td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="button" value="REGISTER" onclick="register()" /></td>
+		</tr>
+	</table>
+
 </body>
 </html>
